@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0f766e" />
+    <title>Yapilacaklar Listesi</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icons/icon-192.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="panel">
+        <header class="panel-head">
+          <p class="eyebrow">WEB + MOBIL + HESAP</p>
+          <h1>Yapilacaklar Listesi</h1>
+          <p class="subhead">Hesapla senkron calisir, misafir modunda da devam edebilirsin.</p>
+        </header>
+
+        <p id="status" class="status" aria-live="polite"></p>
+
+        <section id="auth-section" class="auth-box">
+          <h2 id="auth-title">Giris Yap</h2>
+          <form id="auth-form" class="auth-form">
+            <div id="name-field" class="field" hidden>
+              <label for="auth-name">Ad</label>
+              <input
+                id="auth-name"
+                name="name"
+                type="text"
+                placeholder="Adin"
+                maxlength="60"
+                autocomplete="name"
+              />
+            </div>
+
+            <div class="field">
+              <label for="auth-email">E-posta</label>
+              <input
+                id="auth-email"
+                name="email"
+                type="email"
+                placeholder="ornek@mail.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+
+            <div class="field">
+              <label for="auth-password">Sifre</label>
+              <input
+                id="auth-password"
+                name="password"
+                type="password"
+                placeholder="En az 6 karakter"
+                minlength="6"
+                autocomplete="current-password"
+                required
+              />
+            </div>
+
+            <button id="auth-submit" type="submit">Giris Yap</button>
+          </form>
+
+          <div class="auth-actions">
+            <button id="auth-switch" type="button" class="link-btn">Hesabin yok mu? Kayit ol</button>
+            <button id="guest-btn" type="button" class="ghost-btn">Misafir olarak devam et</button>
+          </div>
+        </section>
+
+        <section id="app-section" hidden>
+          <button id="top-back-btn" class="ghost-btn top-back-btn" type="button" hidden>Geri</button>
+
+          <div class="user-bar">
+            <div class="user-id-block">
+              <img id="user-avatar" class="user-avatar" src="/icons/icon-192.svg" alt="Profil fotografi" />
+              <p id="user-chip" class="user-chip"></p>
+            </div>
+
+            <div class="user-actions">
+              <label id="profile-photo-trigger" class="ghost-btn profile-upload-btn" for="profile-photo-input">
+                Profil fotografi sec / cek
+              </label>
+              <button id="remove-profile-photo" class="ghost-btn" type="button">Fotoyu sil</button>
+              <button id="logout-btn" class="ghost-btn" type="button">Cikis</button>
+            </div>
+          </div>
+          <input id="profile-photo-input" type="file" accept="image/*" capture="environment" />
+
+          <nav id="app-menu-tabs" class="menu-tabs" aria-label="Uygulama menusu">
+            <button class="menu-tab is-active" data-view="overview" type="button">Genel</button>
+            <button class="menu-tab" data-view="tasks" type="button">Gorevler</button>
+            <button id="admin-menu-tab" class="menu-tab" data-view="admin" type="button" hidden>Yonetim</button>
+            <button id="install-btn" class="ghost-btn" type="button" hidden>Uygulamayi Yukle</button>
+          </nav>
+
+          <section id="overview-view" class="menu-view">
+            <div class="overview-card">
+              <h3>Genel Menu</h3>
+              <p>Gorevlerini acmak icin menuden <strong>Gorevler</strong> sekmesine gec.</p>
+              <p id="overview-summary" class="overview-summary">0 gorev</p>
+              <button id="go-tasks-btn" type="button">Gorevleri Ac</button>
+
+              <section id="share-panel" class="share-panel" hidden>
+                <h4>Paylasilan Liste</h4>
+                <p id="share-code-text" class="share-code-text">Liste kodu: -</p>
+                <p id="share-members-text" class="share-members-text">0 uye</p>
+                <div class="share-actions">
+                  <button id="share-copy-btn" class="ghost-btn" type="button">Kodu kopyala</button>
+                </div>
+                <div class="share-join-row">
+                  <input
+                    id="share-join-input"
+                    type="text"
+                    maxlength="24"
+                    placeholder="Paylasim kodu gir"
+                    autocomplete="off"
+                  />
+                  <button id="share-join-btn" type="button">Listeye katil</button>
+                </div>
+              </section>
+            </div>
+          </section>
+
+          <section id="tasks-view" class="menu-view" hidden>
+            <div class="tasks-subnav" role="tablist" aria-label="Gorev alt menusu">
+              <button class="task-subtab is-active" data-task-subview="create" type="button">Yeni Gorev</button>
+              <button class="task-subtab" data-task-subview="list" type="button">Gorevleri Goruntule</button>
+            </div>
+
+            <section id="task-create-view" class="task-subview">
+              <form id="todo-form" class="todo-form">
+                <label for="todo-input" class="sr-only">Yeni gorev</label>
+                <input
+                  id="todo-input"
+                  name="text"
+                  type="text"
+                  placeholder="Yeni gorev yaz..."
+                  maxlength="200"
+                  autocomplete="off"
+                  required
+                />
+                <button type="submit">Ekle</button>
+
+                <div class="todo-extra-fields">
+                  <div class="field-inline">
+                    <label for="todo-priority">Oncelik</label>
+                    <select id="todo-priority" name="priority">
+                      <option value="high">Yuksek</option>
+                      <option value="medium" selected>Orta</option>
+                      <option value="low">Dusuk</option>
+                    </select>
+                  </div>
+
+                  <div class="field-inline">
+                    <label for="todo-due-date">Son tarih</label>
+                    <input id="todo-due-date" name="due_date" type="date" />
+                  </div>
+
+                  <div class="field-inline">
+                    <label for="todo-due-time">Saat</label>
+                    <input id="todo-due-time" name="due_time" type="time" />
+                  </div>
+
+                  <div class="field-inline">
+                    <label for="todo-recurrence">Tekrar</label>
+                    <select id="todo-recurrence" name="recurrence">
+                      <option value="none" selected>Tekrarsiz</option>
+                      <option value="daily">Her gun</option>
+                      <option value="weekly">Haftalik</option>
+                      <option value="monthly">Aylik</option>
+                    </select>
+                  </div>
+
+                  <div class="field-inline field-inline-tags">
+                    <label for="todo-tags">Etiketler</label>
+                    <input
+                      id="todo-tags"
+                      name="tags"
+                      type="text"
+                      maxlength="180"
+                      placeholder="ornek: is, acil, okul"
+                      autocomplete="off"
+                    />
+                  </div>
+
+                  <div class="field-inline field-inline-note">
+                    <label for="todo-note">Not</label>
+                    <textarea
+                      id="todo-note"
+                      name="note"
+                      maxlength="2000"
+                      placeholder="Gorev notu..."
+                    ></textarea>
+                  </div>
+                </div>
+
+                <label class="photo-picker" for="todo-photo">Fotograf sec / cek</label>
+                <input id="todo-photo" name="photo" type="file" accept="image/*" capture="environment" />
+                <p id="photo-name" class="photo-name">Fotograf secilmedi</p>
+
+                <label class="photo-picker" for="todo-attachment">Dosya ekle</label>
+                <input
+                  id="todo-attachment"
+                  name="attachment"
+                  type="file"
+                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.json,.zip,image/*"
+                />
+                <p id="attachment-name" class="photo-name">Dosya secilmedi</p>
+              </form>
+            </section>
+
+            <section id="task-list-view" class="task-subview" hidden>
+              <div class="toolbar">
+                <div class="filters" role="group" aria-label="Filtre">
+                  <button class="filter is-active" data-filter="all" type="button">Tum</button>
+                  <button class="filter" data-filter="active" type="button">Aktif</button>
+                  <button class="filter" data-filter="done" type="button">Tamamlanan</button>
+                </div>
+                <div class="search-filter">
+                  <label for="todo-search-input">Ara</label>
+                  <input id="todo-search-input" type="search" placeholder="Gorev ara..." autocomplete="off" />
+                </div>
+                <div class="tag-filter">
+                  <label for="tag-filter-select">Etiket</label>
+                  <select id="tag-filter-select" aria-label="Etikete gore filtre">
+                    <option value="">Tum etiketler</option>
+                  </select>
+                </div>
+                <div class="combo-filters">
+                  <div class="priority-filter">
+                    <label for="priority-filter-select">Oncelik</label>
+                    <select id="priority-filter-select" aria-label="Oncelige gore filtre">
+                      <option value="all">Tum oncelikler</option>
+                      <option value="high">Yuksek</option>
+                      <option value="medium">Orta</option>
+                      <option value="low">Dusuk</option>
+                    </select>
+                  </div>
+                  <div class="due-filter">
+                    <label for="due-filter-select">Tarih</label>
+                    <select id="due-filter-select" aria-label="Tarihe gore filtre">
+                      <option value="all">Tum tarihler</option>
+                      <option value="overdue">Gecikenler</option>
+                      <option value="today">Bugun</option>
+                      <option value="week">7 gun</option>
+                      <option value="none">Tarihsiz</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="backup-actions">
+                  <button id="backup-export-btn" class="ghost-btn" type="button">Yedek disa aktar</button>
+                  <label class="ghost-btn backup-import-label" for="backup-import-input">Yedek ice aktar</label>
+                  <input id="backup-import-input" type="file" accept="application/json" />
+                </div>
+                <div class="task-actions">
+                  <button id="reminder-btn" class="ghost-btn" type="button">Hatirlatma ac</button>
+                </div>
+                <p id="reorder-hint" class="reorder-hint">Gorevleri tutup surukleyerek siralayabilirsin.</p>
+              </div>
+
+              <div id="bulk-toolbar" class="bulk-toolbar">
+                <button id="bulk-mode-btn" class="ghost-btn" type="button">Coklu secim</button>
+                <div id="bulk-controls" class="bulk-controls" hidden>
+                  <button id="bulk-select-all-btn" class="ghost-btn" type="button">Gorunenleri sec</button>
+                  <button id="bulk-complete-btn" class="ghost-btn" type="button">Secileni tamamla</button>
+                  <button id="bulk-delete-btn" class="ghost-btn" type="button">Secileni sil</button>
+                  <button id="bulk-cancel-btn" class="ghost-btn" type="button">Iptal</button>
+                  <p id="bulk-count" class="bulk-count">0 secili</p>
+                </div>
+              </div>
+
+              <ul id="todo-list" class="todo-list"></ul>
+
+              <footer class="panel-foot">
+                <p id="summary">0 gorev</p>
+                <button id="clear-done" class="ghost-btn" type="button">Tamamlananlari temizle</button>
+              </footer>
+            </section>
+          </section>
+
+          <section id="admin-view" class="menu-view" hidden>
+            <div class="admin-head">
+              <h3>Yonetim Paneli</h3>
+              <button id="admin-refresh-btn" class="ghost-btn" type="button">Yenile</button>
+            </div>
+
+            <div class="admin-stats">
+              <article class="admin-stat-card">
+                <p class="admin-stat-label">Kullanicilar</p>
+                <p id="admin-stat-users" class="admin-stat-value">0</p>
+              </article>
+              <article class="admin-stat-card">
+                <p class="admin-stat-label">Toplam Gorev</p>
+                <p id="admin-stat-todos" class="admin-stat-value">0</p>
+              </article>
+              <article class="admin-stat-card">
+                <p class="admin-stat-label">Aktif</p>
+                <p id="admin-stat-active" class="admin-stat-value">0</p>
+              </article>
+              <article class="admin-stat-card">
+                <p class="admin-stat-label">Tamamlanan</p>
+                <p id="admin-stat-done" class="admin-stat-value">0</p>
+              </article>
+            </div>
+
+            <div class="admin-subtabs" role="tablist" aria-label="Yonetim alt menusu">
+              <button class="admin-subtab is-active" data-admin-subview="users" type="button">
+                Kullanicilar
+              </button>
+              <button class="admin-subtab" data-admin-subview="todos" type="button">Gorevler</button>
+              <button class="admin-subtab" data-admin-subview="logs" type="button">Gecmis</button>
+            </div>
+
+            <section id="admin-users-section" class="admin-block">
+              <h4>Kullanicilar</h4>
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Ad</th>
+                      <th>E-posta</th>
+                      <th>Rol</th>
+                      <th>Gorev</th>
+                      <th>Islem</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-users-body"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section id="admin-todos-section" class="admin-block" hidden>
+              <h4>Son Gorevler</h4>
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Kullanici</th>
+                      <th>Gorev</th>
+                      <th>Durum</th>
+                      <th>Islem</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-todos-body"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section id="admin-logs-section" class="admin-block" hidden>
+              <h4>Islem Gecmisi</h4>
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Tarih</th>
+                      <th>Admin</th>
+                      <th>Islem</th>
+                      <th>Detay</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-logs-body"></tbody>
+                </table>
+              </div>
+            </section>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <div id="photo-preview-modal" class="photo-modal" hidden>
+      <div class="photo-modal-card" role="dialog" aria-modal="true" aria-label="Fotograf onizleme">
+        <button id="photo-preview-close" class="photo-modal-close" type="button">Kapat</button>
+        <img id="photo-preview-image" class="photo-modal-image" alt="Fotograf onizleme" />
+      </div>
+    </div>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>

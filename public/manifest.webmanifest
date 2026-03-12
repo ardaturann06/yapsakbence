@@ -1,0 +1,23 @@
+{
+  "name": "Yapilacaklar Listesi",
+  "short_name": "Yapilacaklar",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6fff9",
+  "theme_color": "#0f766e",
+  "description": "Web ve mobil uyumlu yapilacaklar listesi uygulamasi",
+  "icons": [
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
